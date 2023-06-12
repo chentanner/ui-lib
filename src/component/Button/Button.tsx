@@ -1,13 +1,34 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import './Button.css';
+import { useEffect } from 'react';
 
 interface ButtonProps {
   label: string;
+  api?: string;
 }
 
 const Button: FC<ButtonProps> = (props: ButtonProps) => {
+
+  const [label, setLabel] = useState<string | undefined>();
+
+  useEffect(() => {
+    setLabel(props.label);
+  }, [])
+
+  useEffect(() => {
+    if (props.api) {
+      fetch(props.api)
+        .then(response => {
+          return response.json()
+        })
+        .then(data => {
+          setLabel(data.title)
+        })
+    }
+  }, [props.api]);
+
   return (
-    <button>{props.label}</button>
+    <button>{label ? label : ""}</button>
   );
 }
 
