@@ -7,6 +7,10 @@ interface ButtonProps {
   api?: string;
 }
 
+class ButtonApiResponse {
+  title = ""
+}
+
 const Button: FC<ButtonProps> = (props: ButtonProps) => {
 
   const [label, setLabel] = useState<string | undefined>();
@@ -21,7 +25,8 @@ const Button: FC<ButtonProps> = (props: ButtonProps) => {
         .then(response => {
           return response.json()
         })
-        .then(data => {
+        .then((data: ButtonApiResponse) => {
+          Object.assign(new ButtonApiResponse(), data);
           setLabel(data.title)
         })
     }
